@@ -2,7 +2,7 @@ from django.conf.urls import url
 from django.urls import path,include
 
 
-from .views import UserApi,JsonfileApi
+from .views import UserApi,JsonfileApi,VerifUser
 
 
 urlpatterns =[
@@ -10,4 +10,5 @@ urlpatterns =[
     url(r'^user/<login>/$',UserApi),
     url(r'^json/$',JsonfileApi),
     url(r'^json/<name>/$',JsonfileApi),
+    url(r'^Auth_User/$',VerifUser)
 ]

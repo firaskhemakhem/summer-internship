@@ -4,7 +4,7 @@ from JsonFile.models import User,JsonfileModel
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['Login','Email']
+        fields = ['Login','Email','Password','Name']
 
 class JsonfileSerializer(serializers.ModelSerializer):
     class Meta:

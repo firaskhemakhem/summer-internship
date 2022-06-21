@@ -8,6 +8,8 @@ from django.http.response import JsonResponse
 
 from JsonFile.serializers import UserSerializer,JsonfileSerializer
 from JsonFile.models import User,JsonfileModel
+from django.core.exceptions import ObjectDoesNotExist
+
 
 
 # Create your views here.
@@ -27,16 +29,26 @@ def UserApi(request,login=''):
     elif request.method == 'PUT':
         user_data = JSONParser().parse(request)
         user = User.objects.get(Login=user_data['Login'])
+        print(user.Login)
         user_serializer = UserSerializer(user,data = user_data)
         if user_serializer.is_valid():
             user_serializer.save()
+            print(user_serializer)
             return JsonResponse("Updated Successfully !!", safe = False)
         return JsonResponse("Failed to Update !!", safe = False)
     elif request.method == 'DELETE':
         user = User.objects.get(Login=login)
         user.delete()
         return JsonResponse("Deleted Successfully" , safe = False)
-
+@csrf_exempt
+def VerifUser(request):
+    if request.method == 'POST':
+        User_Data = JSONParser().parse(request)
+        try:
+            user = User.objects.get(Login=User_Data['Login'],Password=User_Data['Password'])
+            return JsonResponse("success!",safe = False)
+        except ObjectDoesNotExist:
+            return JsonResponse("error !",safe = False)
 
 @csrf_exempt
 def JsonfileApi(request,name=''):
